@@ -1,15 +1,17 @@
 import { RequestHandler } from "express";
 
-const booksService = require("./Book.service");
+import BookService from "./Book.service";
 
 export const getBooks: RequestHandler = async (req, res) => {
   try {
-    const books = await booksService.getBooks();
+    console.log(BookService);
+    const books = await BookService.getBooks();
     return res.json({
       message: "books retrieved successfully",
       data: { books },
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "failed to get books" });
   }
 };
@@ -17,7 +19,7 @@ export const getBooks: RequestHandler = async (req, res) => {
 export const getBook: RequestHandler = async (req, res) => {
   try {
     const bookId = req.params.id;
-    const book = await booksService.getBook(bookId);
+    const book = await BookService.getBook(bookId);
 
     if (!book) {
       return res.status(404).json({ message: "404 not found" });
@@ -40,7 +42,7 @@ export const createBook: RequestHandler = async (req, res) => {
         .status(400)
         .json({ message: "400 invalid request, title is required" });
     }
-    const book = await booksService.createBook({ title, description, price });
+    const book = await BookService.createBook({ title, description, price });
     return res.status(201).json({
       message: "book created successfully",
       data: { book },
@@ -53,14 +55,14 @@ export const createBook: RequestHandler = async (req, res) => {
 export const updateBook: RequestHandler = async (req, res) => {
   try {
     const bookId = req.params.id;
-    const book = await booksService.getBook(bookId);
+    const book = await BookService.getBook(bookId);
 
     if (!book) {
       return res.status(404).json({ message: "404 not found" });
     }
 
     const { title, description, price } = req.body;
-    const updatedBook = await booksService.updateBook(book, {
+    const updatedBook = await BookService.updateBook(book, {
       title,
       description,
       price,
@@ -77,12 +79,12 @@ export const updateBook: RequestHandler = async (req, res) => {
 export const deleteBook: RequestHandler = async (req, res) => {
   try {
     const bookId = req.params.id;
-    const book = await booksService.getBook(bookId);
+    const book = await BookService.getBook(bookId);
 
     if (!book) {
       return res.status(404).json({ message: "404 not found" });
     }
-    await booksService.deleteBook(book);
+    await BookService.deleteBook(book);
     return res.json({
       message: "book deleted successfully",
     });
