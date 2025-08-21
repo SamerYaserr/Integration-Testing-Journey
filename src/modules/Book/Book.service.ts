@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma";
+import prisma from "../../config/prisma.config";
 import { ICreateBookBody, IUpdateBookBody, IBook } from "./Book.interface";
 
 class BookService {
