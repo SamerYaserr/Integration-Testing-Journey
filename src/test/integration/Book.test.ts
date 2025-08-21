@@ -1,6 +1,23 @@
 import prisma from "../../config/prisma.config";
 import BookService from "../../modules/Book/Book.service";
 
+/*
+helpers:
+
+- afterEach => runs after each individual test.
+- beforeEach => runs before each individual test.
+- afterAll => runs once after all tests in a file.
+- beforeAll => runs once before all tests in a file.
+*/
+
+beforeEach(async () => {
+  await prisma.book.deleteMany();
+});
+
+afterAll(async () => {
+  await prisma.book.deleteMany();
+});
+
 describe("getBooks", () => {
   it("should return empty array", async () => {
     const books = await BookService.getBooks();
@@ -21,7 +38,7 @@ describe("getBooks", () => {
 
     const books = await BookService.getBooks();
     expect(books.length).toBe(2);
-
-    await prisma.book.deleteMany();
+    expect(books[0]).toMatchObject({ title: "Book1" });
+    expect(books[1]).toMatchObject({ title: "Book2" });
   });
 });
