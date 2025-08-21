@@ -42,3 +42,13 @@ describe("getBooks", () => {
     expect(books[1]).toMatchObject({ title: "Book2" });
   });
 });
+
+describe("createBook", () => {
+  it("should create book with title Java", async () => {
+    await BookService.createBook({ title: "Java" });
+
+    const books = await prisma.book.findMany();
+    expect(books.length).toBe(1);
+    expect(books[0]).toMatchObject({ title: "Java" });
+  });
+});
