@@ -7,6 +7,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use("/api", bookRouter);
+app.use("/api/books", bookRouter);
 
 export default app;
