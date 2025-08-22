@@ -4,7 +4,6 @@ import BookService from "./Book.service";
 
 export const getBooks: RequestHandler = async (req, res) => {
   try {
-    console.log(BookService);
     const books = await BookService.getBooks();
     return res.json({
       message: "books retrieved successfully",

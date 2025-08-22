@@ -2,7 +2,6 @@ import request from "supertest";
 
 import prisma from "../../config/prisma.config";
 import server from "../../server";
-import { title } from "process";
 
 beforeEach(async () => {
   await prisma.book.deleteMany();
@@ -71,5 +70,15 @@ describe("deleteBook", () => {
 
     expect(res.status).toBe(404);
     expect(res.body.message).toMatch("404 not found");
+  });
+});
+
+describe("createBook", () => {
+  it("should return 400 if title not fount", async () => {
+    const res = await request(server).post(`/api/books/`).send({});
+    console.log(res.body);
+
+    expect(res.status).toBe(400);
+    expect(res.body.message).toMatch("400 invalid request, title is required");
   });
 });
