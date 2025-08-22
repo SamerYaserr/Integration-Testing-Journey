@@ -34,7 +34,7 @@ describe("getBook", () => {
 });
 
 describe("updateBook", () => {
-  it("should return 200 and get book from db", async () => {
+  it("should return 200 and update the book", async () => {
     const book = await prisma.book.create({ data: { title: "MyBook" } });
     const res = await request(server)
       .put(`/api/books/${book.id}`)
@@ -49,6 +49,25 @@ describe("updateBook", () => {
     const res = await request(server)
       .put(`/api/books/43556608-4797-4416-b9b5-f1e6945107dd`)
       .send({ title: "MyBook Updated" });
+
+    expect(res.status).toBe(404);
+    expect(res.body.message).toMatch("404 not found");
+  });
+});
+
+describe("deleteBook", () => {
+  it("should return 200 and delete the book", async () => {
+    const book = await prisma.book.create({ data: { title: "MyBook" } });
+    const res = await request(server).delete(`/api/books/${book.id}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toMatch("book deleted successfully");
+  });
+
+  it("should return 404 if book not found", async () => {
+    const res = await request(server).delete(
+      `/api/books/43556608-4797-4416-b9b5-f1e6945107dd`
+    );
 
     expect(res.status).toBe(404);
     expect(res.body.message).toMatch("404 not found");
