@@ -2,6 +2,10 @@ import prisma from "../../config/prisma.config";
 import BookService from "../../modules/Book/Book.service";
 
 /*
+- IMPORTANT: We use a separate database for testing to ensure the main database remains unaffected.
+*/
+
+/*
 helpers:
 
 - afterEach => runs after each individual test.
@@ -11,10 +15,12 @@ helpers:
 */
 
 beforeEach(async () => {
+  // ensure database is clean before each test
   await prisma.book.deleteMany();
 });
 
 afterAll(async () => {
+  // clean database after all tests finish
   await prisma.book.deleteMany();
 });
 

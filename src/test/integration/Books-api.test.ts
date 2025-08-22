@@ -3,6 +3,16 @@ import request from "supertest";
 import prisma from "../../config/prisma.config";
 import server from "../../server";
 
+/*
+- Supertest is a Node.js library for testing HTTP servers by making real requests to your API endpoints.  
+- It integrates with test frameworks like Jest or Mocha, allowing you to send requests and assert on the response.  
+ */
+
+/*
+- jest --coverage runs your tests and instruments your source code to collect code-coverage metrics.
+- It prints a summary in the terminal and generates a `coverage/` folder with detailed HTML reports you can open in a browser.
+*/
+
 beforeEach(async () => {
   await prisma.book.deleteMany();
 });
@@ -76,7 +86,6 @@ describe("deleteBook", () => {
 describe("createBook", () => {
   it("should return 400 if title not fount", async () => {
     const res = await request(server).post(`/api/books/`).send({});
-    console.log(res.body);
 
     expect(res.status).toBe(400);
     expect(res.body.message).toMatch("400 invalid request, title is required");
